@@ -25,6 +25,12 @@
             How to Calculate APR
           </div>
         </div>
+
+        <div class="swap-options">
+          <div>
+            <img src="@/assets/back.svg" alt="Back" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
