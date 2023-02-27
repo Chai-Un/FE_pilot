@@ -69,10 +69,10 @@
         </div>
       </div>
     </div>
-    <div class='w-full max-w-[672px] m-auto px-4 grid grid-cols-1 sm:grid-cols-3'>
-      <div class='flex justify-start'>
-        <Button variant='secondary-outlined' class='gap-1'>
-          <Icon name='ic-plus' size='0 0 24 24' />
+    <div class="w-full max-w-[672px] m-auto px-4 grid grid-cols-1 sm:grid-cols-3">
+      <div class="flex justify-start">
+        <Button variant="secondary-outlined" class="gap-1">
+          <Icon name="ic-plus" size="0 0 24 24" />
           Create
         </Button>
       </div>

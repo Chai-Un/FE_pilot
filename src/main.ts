@@ -11,7 +11,7 @@ const app = createApp(App)
 
 app.use(svgSpritePlugin, {
   url: '/static/icons/icons.svg',
-  class: 'icon',
+  class: 'icon'
 })
 app.use(createPinia())
 app.use(router)
