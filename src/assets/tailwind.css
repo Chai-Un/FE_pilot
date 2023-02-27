@@ -1,0 +1,12 @@
+/*noinspection CssInvalidAtRule*/
+@tailwind base;
+
+/*noinspection CssInvalidAtRule*/
+@tailwind components;
+
+/*noinspection CssInvalidAtRule*/
+@tailwind utilities;
+
+* {
+  font-family: IBM Plex Sans KR, Arial, Helvetica, Trebuchet MS, Verdana, sans-serif;
+}
