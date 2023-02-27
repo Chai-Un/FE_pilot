@@ -20,23 +20,23 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, withDefaults } from 'vue';
+import { defineProps, withDefaults } from 'vue'
 
 interface Props {
-  name: string;
-  size?: string;
-  viewBox?: string;
-  height?: string;
-  width?: string;
+  name: string
+  size?: string
+  viewBox?: string
+  height?: string
+  width?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: '0 0 24 24',
-});
+  size: '0 0 24 24'
+})
 </script>
 
 <script lang="ts">
 export default {
-  name: 'PIcon',
-};
+  name: 'PIcon'
+}
 </script>

@@ -1,25 +1,22 @@
 <template>
-  <button
-    :class="props.variant"
-    v-bind="$attrs"
-  >
+  <button :class="props.variant" v-bind="$attrs">
     <slot></slot>
   </button>
 </template>
 <script lang="ts" setup>
 interface Props {
-  variant?: 'primary';
+  variant?: 'primary'
 }
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'primary',
-});
+  variant: 'primary'
+})
 </script>
 <script lang="ts">
 export default {
   name: 'PButton'
 }
 </script>
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .primary {
   @apply flex rounded text-lxs px-2 py-1 bg-orange-300 text-orange-900 hover:text-white hover:bg-orange-900 items-center justify-center;
 }

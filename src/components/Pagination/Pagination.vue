@@ -1,17 +1,17 @@
 <template>
   <div class="flex flex-row items-center justify-center">
-    <span class='least'>
-      <Icon name='ic-paging-first' size='0 0 13 12' />
+    <span class="least">
+      <Icon name="ic-paging-first" size="0 0 13 12" />
     </span>
-    <span class='prev'>
-      <Icon name='ic-paging-prev' size='0 0 7 12' />
+    <span class="prev">
+      <Icon name="ic-paging-prev" size="0 0 7 12" />
     </span>
-    <span class='text-neutral-600 text-xs font-semibold mx-2'>Page 1 of 19</span>
-    <span class='next'>
-      <Icon name='ic-paging-next' size='0 0 7 12' />
+    <span class="text-neutral-600 text-xs font-semibold mx-2">Page 1 of 19</span>
+    <span class="next">
+      <Icon name="ic-paging-next" size="0 0 7 12" />
     </span>
-    <span class='last'>
-      <Icon name='ic-paging-last' size='0 0 13 12' />
+    <span class="last">
+      <Icon name="ic-paging-last" size="0 0 13 12" />
     </span>
   </div>
 </template>
@@ -20,10 +20,10 @@ import Icon from '@/components/Icon/Icon.vue'
 </script>
 <script lang="ts">
 export default {
-  name: 'PPagination',
+  name: 'PPagination'
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .least,
 .prev,
 .next,
