@@ -1,7 +1,7 @@
 <template>
-  <div class="flex pt-6 pb-[48px] bg-neutral-300">
+  <div class="flex flex-col gap-6 pt-6 pb-[48px] bg-neutral-300">
     <div
-      class="flex flex-col pt-6 pb-8 w-[672px] mx-auto rounded-lg border border-blue-300 shadow bg-white"
+      class="flex flex-col pt-6 pb-8 w-full max-w-[672px] mx-auto rounded-lg border border-blue-300 shadow bg-white"
     >
       <div
         class="flex flex-col sm:flex-row px-6 mb-6 gap-6 justify-between items-start sm:items-center"
@@ -69,6 +69,15 @@
         </div>
       </div>
     </div>
+    <div class='w-full max-w-[672px] m-auto px-4 grid grid-cols-1 sm:grid-cols-3'>
+      <div class='flex justify-start'>
+        <Button variant='secondary-outlined' class='gap-1'>
+          <Icon name='ic-plus' size='0 0 24 24' />
+          Create
+        </Button>
+      </div>
+      <Pagination></Pagination>
+    </div>
   </div>
 </template>
 
@@ -77,6 +86,8 @@ import Input from '@/components/Input/Input.vue'
 import Tag from '@/components/Tag/Tag.vue'
 import TagBase from '@/components/Tag/TagBase.vue'
 import Button from '@/components/Button/Button.vue'
+import Pagination from '@/components/Pagination/Pagination.vue'
+import Icon from '@/components/Icon/Icon.vue'
 </script>
 
 <style lang="scss" scoped>
