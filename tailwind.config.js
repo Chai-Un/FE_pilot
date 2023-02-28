@@ -153,7 +153,10 @@ module.exports = {
         900: '#000000'
       },
       stone: colors.stone,
-      red: colors.red,
+      red: {
+        ...colors.red,
+        800: '#ed3636',
+      },
       orange: {
         ...colors.orange,
         300: '#fffaf8',

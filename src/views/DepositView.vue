@@ -44,7 +44,7 @@
         <div class="grid gap-y-2 row-auto min-w-0 m-0">
           <!-- Active -->
           <button
-            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400"
+            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400 overflow-auto"
             :class="generateClass(PRICE_RANGE_TYPES.ACTIVE)"
             @click="selectPriceRange(PRICE_RANGE_TYPES.ACTIVE)"
           >
@@ -65,7 +65,7 @@
 
           <!-- Passive -->
           <button
-            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400"
+            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400 overflow-auto"
             :class="generateClass(PRICE_RANGE_TYPES.PASSIVE)"
             @click="selectPriceRange(PRICE_RANGE_TYPES.PASSIVE)"
           >
@@ -86,7 +86,7 @@
 
           <!-- Custom -->
           <button
-            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400"
+            class="w-full p-4 bg-white rounded-lg border border-solid border-neutral-400 overflow-auto"
             :class="generateClass(PRICE_RANGE_TYPES.CUSTOM)"
             @click="selectPriceRange(PRICE_RANGE_TYPES.CUSTOM)"
           >
@@ -116,12 +116,22 @@
       </template>
 
       <button
-        width="100%"
-        height="64px"
         class="w-full h-[64px] text-orange-800 bg-black px-4 py-6 text-center rounded-lg hover:text-orange-900 mt-4"
       >
         <div class="text-lg font-semibold">Next</div>
       </button>
+
+      <button
+        class="w-full h-[64px] text-neutral-500 px-4 py-6 text-center rounded-lg mt-4 bg-neutral-300"
+      >
+        <div class="text-lg font-medium">Invalid Range</div>
+      </button>
+      <div class="flex mt-4">
+        <div class="flex w-full gap-2 justify-center items-center">
+          <Icon name="ic-warning" class="text-red-800" />
+          <div class="text-lxs font-medium text-red-800">The min price must be lower than the max price.</div>
+        </div>
+      </div>
     </div>
 
     <div class="flex gap-x-1 items-center justify-center mt-6 mx-[38px] mb-[63px]">
@@ -143,6 +153,8 @@
 import { ref } from 'vue'
 import Stepper from '../components/Common/Stepper.vue'
 import CustomPriceRange from '../components/CustomPriceRange/CustomPriceRange.vue'
+import Icon from '@/components/Icon/Icon.vue'
+
 enum PRICE_RANGE_TYPES {
   ACTIVE = 'ACTIVE',
   PASSIVE = 'PASSIVE',
