@@ -74,7 +74,7 @@
           minPrice > maxPrice
       }"
     >
-      <div class="h-6 justify-between flex w-full items-center">
+      <!-- <div class="h-6 justify-between flex w-full items-center">
         <div class="flex items-center gap-x-2">
           <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
           <div class="sc-tegty0-1 DvmOQ">
@@ -85,6 +85,21 @@
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
           {{ maxPrice > minPrice? `49.9% STONE <br />/ 50.1% KLAY` : '-' }}
+        </div>
+      </div> -->
+
+      <div class="h-6 justify-between flex w-full items-center">
+        <div class="flex items-center gap-x-2">
+          <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
+          <div class="sc-tegty0-1 DvmOQ">
+            <div class="sc-17suybh-0 fNPprW">
+              <img src="@/assets/notice.svg" alt="Notice" />
+            </div>
+          </div>
+        </div>
+        <div class="text-sm font-medium text-neutral-500 text-end">
+          {{ calculatorPercentRatio(34.0498, 34.0498 + 52.1332) }} STONE<br />/
+          {{ calculatorPercentRatio(52.1332, 34.0498 + 52.1332) }} KLAY
         </div>
       </div>
 
@@ -98,7 +113,7 @@
           </div>
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
-          {{ maxPrice > minPrice ? `X9.90` : '-' }}
+          {{ maxPrice > minPrice ? `X${genRandFeeBoost(9, 12)}` : '-' }}
         </div>
       </div>
 
@@ -107,7 +122,7 @@
           <div class="text-sm font-semibold">Estimated APR</div>
         </div>
         <div class="text-lg font-medium font-bold text-end">
-          {{ maxPrice > minPrice ? `68.67%` : '-' }}
+          {{ maxPrice > minPrice ? calculatorEstimatedAPR(1, 2) : '-' }}
         </div>
       </div>
     </div>
@@ -133,6 +148,7 @@
 import { ref } from 'vue'
 import InputPrice from '../InputPrice/InputPrice.vue'
 import Icon from '@/components/Icon/Icon.vue'
+import { calculatorPercentRatio, genRandFeeBoost, calculatorEstimatedAPR } from '@/utils/helper'
 
 const minPrice = ref(400)
 const maxPrice = ref(500)

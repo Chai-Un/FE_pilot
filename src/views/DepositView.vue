@@ -129,7 +129,9 @@
       <div class="flex mt-4">
         <div class="flex w-full gap-2 justify-center items-center">
           <Icon name="ic-warning" class="text-red-800" />
-          <div class="text-lxs font-medium text-red-800">The min price must be lower than the max price.</div>
+          <div class="text-lxs font-medium text-red-800">
+            The min price must be lower than the max price.
+          </div>
         </div>
       </div>
     </div>
