@@ -43,6 +43,7 @@ export interface PoolState {
   pools: Pool[]
   paging: Paging
   selectedPool?: Pool
+  textSearch: string
 }
 
 export const usePoolStore = defineStore('pool', () => {
@@ -50,6 +51,7 @@ export const usePoolStore = defineStore('pool', () => {
     allPools: [],
     pools: [],
     selectedPool: undefined,
+    textSearch: '',
     paging: {
       page: 0,
       limit: 10,
@@ -58,14 +60,27 @@ export const usePoolStore = defineStore('pool', () => {
     }
   })
 
-  const allPools = computed(() => state.value.allPools)
+  const allPools = computed(() => {
+    if (state.value.textSearch.length) {
+      return state.value.allPools.filter(
+        (item) =>
+          item.token0.name.includes(state.value.textSearch) ||
+          item.token1.name.includes(state.value.textSearch)
+      )
+    }
+    return state.value.allPools
+  })
   const paging = computed(() => state.value.paging)
   const pools = computed(() => {
     const data = [...allPools.value]
     return data.splice(paging.value.page * paging.value.limit, paging.value.limit)
   })
-  const totalPage = computed(() => Math.round(state.value.allPools.length / paging.value.limit))
+  const totalPage = computed(() => {
+    const temp = allPools.value.length / paging.value.limit
+    return temp > Math.floor(temp) ? Math.floor(temp) + 1 : Math.floor(temp)
+  })
   const selectedPool = computed(() => state.value.selectedPool)
+  const textSearch = computed(() => state.value.textSearch)
 
   const fetchPools = async () => {
     try {
@@ -83,7 +98,7 @@ export const usePoolStore = defineStore('pool', () => {
     if (!state.value.paging.canNext) return
     state.value.paging.page += 1
     const { page, limit } = state.value.paging
-    state.value.paging.canNext = state.value.allPools.length - (page + 1) * limit > 0
+    state.value.paging.canNext = allPools.value.length - (page + 1) * limit > 0
     state.value.paging.canPrev = true
   }
 
@@ -99,13 +114,13 @@ export const usePoolStore = defineStore('pool', () => {
     state.value.paging.page = 0
     state.value.paging.canPrev = false
     const { page, limit } = state.value.paging
-    state.value.paging.canNext = state.value.allPools.length - (page + 1) * limit > 0
+    state.value.paging.canNext = allPools.value.length - (page + 1) * limit > 0
   }
 
   const lastPage = () => {
     if (!state.value.paging.canNext) return
     const { limit } = state.value.paging
-    const totalLength = state.value.allPools.length
+    const totalLength = allPools.value.length
     state.value.paging.page =
       totalLength % limit !== 0
         ? Math.floor(totalLength / limit)
@@ -116,6 +131,14 @@ export const usePoolStore = defineStore('pool', () => {
 
   const selectPool = (selected: Pool) => {
     state.value.selectedPool = selected
+  }
+
+  const setTextSearch = (text: string) => {
+    state.value.textSearch = text
+    state.value.paging.page = 0
+    state.value.paging.canPrev = false
+    const { page, limit } = paging.value
+    state.value.paging.canNext = (page + 1) * limit <= allPools.value.length
   }
 
   return {
@@ -129,6 +152,8 @@ export const usePoolStore = defineStore('pool', () => {
     lastPage,
     totalPage,
     selectPool,
-    selectedPool
+    selectedPool,
+    setTextSearch,
+    textSearch
   }
 })

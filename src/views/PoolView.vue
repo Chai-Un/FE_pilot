@@ -8,7 +8,12 @@
       >
         <span class="text-2xl font-bold">POOL</span>
         <div class="flex flex-row gap-2 w-[100%] sm:w-auto">
-          <Input placeholder="Token name" class="focus:text-orange-900">
+          <Input
+            placeholder="Token name"
+            class="focus:text-orange-900"
+            @change="handleTextSearch($event)"
+            v-model="textSearch"
+          >
             <template #input-prepend>
               <Icon size="0 0 16 16" name="ic-search" />
             </template>
@@ -35,6 +40,7 @@
         </Button>
       </div>
       <Pagination
+        v-if="poolStore.totalPage"
         :page="poolStore.paging.page"
         :canNext="poolStore.paging.canNext"
         :canPrev="poolStore.paging.canPrev"
@@ -50,8 +56,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount } from 'vue'
-import { usePoolStore, Pool as IPool } from '@/stores/pool'
+import { onBeforeMount, ref } from 'vue'
+import { usePoolStore, type Pool as IPool } from '@/stores/pool'
 import Input from '@/components/Input/Input.vue'
 import Button from '@/components/Button/Button.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
@@ -61,12 +67,18 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const poolStore = usePoolStore()
+const textSearch = ref('')
+
 const selectPool = (pool: IPool) => {
   poolStore.selectPool(pool)
   router.push(`/pool/${pool.address}`)
 }
+const handleTextSearch = ($event: any) => {
+  poolStore.setTextSearch($event)
+}
 
 onBeforeMount(async () => {
   await poolStore.fetchPools()
+  textSearch.value = poolStore.textSearch
 })
 </script>

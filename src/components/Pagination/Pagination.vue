@@ -20,14 +20,15 @@
 <script lang="ts" setup>
 import { defineEmits } from 'vue'
 import Icon from '@/components/Icon/Icon.vue'
-import { Paging } from '@/stores/pool'
 
-interface Props extends Paging {
+interface Props {
   totalPage: number
   page: number
+  limit?: number
   canNext: boolean
   canPrev: boolean
 }
+
 const props = defineProps<Props>()
 const emits = defineEmits(['next', 'prev', 'start', 'last'])
 </script>

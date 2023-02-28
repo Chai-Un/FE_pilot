@@ -40,7 +40,7 @@
           <div
             class="bg-orange-400 text-lxs font-semibold justify-center p-1.5 text-orange-900 rounded leading-none"
           >
-            {{ poolStore.selectedPool?.swapFee / 10000 }}%
+            {{ (poolStore.selectedPool?.swapFee || 0) / 10000 }}%
           </div>
         </div>
 

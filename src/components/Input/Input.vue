@@ -26,10 +26,11 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 })
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'change'])
 
 const handleInput = ($event: Event) => {
   emits('update:modelValue', ($event.target as HTMLInputElement).value)
+  emits('change', ($event.target as HTMLInputElement).value)
 }
 
 const classes = computed<object>(() => ({
