@@ -2,7 +2,7 @@
   <div class="flex flex-row px-4 py-2 items-center justify-center bg-gray-200">
     <img
       class="rounded-full shadowed object-contain mr-2"
-      src="@/assets/stone.svg"
+      src="@/assets/tokens/stone.svg"
       alt="Stone logo"
     />
     <span class="text-sm font-semibold text-neutral-900"
