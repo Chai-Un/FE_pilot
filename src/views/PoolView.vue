@@ -8,9 +8,9 @@
       >
         <span class="text-2xl font-bold">POOL</span>
         <div class="flex flex-row gap-2 w-[100%] sm:w-auto">
-          <Input placeholder="Token name">
+          <Input placeholder="Token name" class="focus:text-orange-900">
             <template #input-prepend>
-              <img class="w-[16px] h-[16px]" src="@/assets/search.svg" alt="Sort Icon" />
+              <Icon size="0 0 16 16" name="ic-search" />
             </template>
           </Input>
           <div

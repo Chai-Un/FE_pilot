@@ -7,7 +7,7 @@
       class="m-0 min-w-0 pt-6 px-6 pb-8 max-w-[500px] w-full rounded-lg border border-solid border-neutral-200 bg-white shadow-md"
     >
       <div class="flex w-full items-center justify-between">
-        <div class="back">
+        <div class="back" @click="() => router.push('/pool')">
           <img src="@/assets/back.svg" alt="Back" />
         </div>
         <div class="font-medium text-2xl">Set Price Range</div>
@@ -32,12 +32,15 @@
           <div class="flex gap-x-1">
             <img src="@/assets/stone.svg" alt="Stone" class="flex w-6" />
             <img src="@/assets/tokens/klay.png" alt="KLAY" class="flex w-6" />
-            <div class="ml-2 font-semibold text-medium">STONE / KLAY</div>
+            <div class="ml-2 font-semibold text-medium">
+              {{ poolStore.selectedPool?.token0.symbol }} /
+              {{ poolStore.selectedPool?.token1.symbol }}
+            </div>
           </div>
           <div
             class="bg-orange-400 text-lxs font-semibold justify-center p-1.5 text-orange-900 rounded leading-none"
           >
-            0.2%
+            {{ poolStore.selectedPool?.swapFee / 10000 }}%
           </div>
         </div>
 
@@ -116,17 +119,19 @@
       </template>
 
       <button
+        v-if="selectedPriceRange"
         class="w-full h-[64px] text-orange-800 bg-black px-4 py-6 text-center rounded-lg hover:text-orange-900 mt-4"
       >
         <div class="text-lg font-semibold">Next</div>
       </button>
 
       <button
+        v-if="selectedPriceRange && selectedPriceRange === PRICE_RANGE_TYPES.CUSTOM"
         class="w-full h-[64px] text-neutral-500 px-4 py-6 text-center rounded-lg mt-4 bg-neutral-300"
       >
         <div class="text-lg font-medium">Invalid Range</div>
       </button>
-      <div class="flex mt-4">
+      <div class="flex mt-4" v-if="selectedPriceRange === PRICE_RANGE_TYPES.CUSTOM">
         <div class="flex w-full gap-2 justify-center items-center">
           <Icon name="ic-warning" class="text-red-800" />
           <div class="text-lxs font-medium text-red-800">
@@ -152,10 +157,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import Stepper from '../components/Common/Stepper.vue'
 import CustomPriceRange from '../components/CustomPriceRange/CustomPriceRange.vue'
 import Icon from '@/components/Icon/Icon.vue'
+import { usePoolStore } from '@/stores/pool'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+const poolStore = usePoolStore()
 
 enum PRICE_RANGE_TYPES {
   ACTIVE = 'ACTIVE',
@@ -176,6 +187,16 @@ const generateClass = (type: PRICE_RANGE_TYPES) => {
     'not-selected': selectedPriceRange.value && selectedPriceRange.value !== type
   }
 }
+
+onBeforeMount(async () => {
+  if (!poolStore.selectedPool) {
+    await poolStore.fetchPools()
+    const selectedPool = poolStore.allPools.find((item) => item.address === route.params.address)
+    if (selectedPool) {
+      poolStore.selectPool(selectedPool)
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>

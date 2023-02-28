@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/PoolView.vue')
       },
       {
-        path: '/pool/:walletAddress',
+        path: '/pool/:address',
         name: 'deposit',
         component: () => import('@/views/DepositView.vue')
       }
