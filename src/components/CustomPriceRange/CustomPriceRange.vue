@@ -90,7 +90,8 @@
         <div class="flex items-center gap-x-2">
           <div class="text-sm font-semibold">Estimated APR</div>
         </div>
-        <div class="text-lg font-medium font-bold text-end">68.67%</div>
+        <!-- <div class="text-lg font-medium font-bold text-end">68.67%</div> -->
+        <div class="text-lg font-medium font-bold text-end">{{ calculatorEstimatedAPR(1, 2) }}</div>
       </div>
     </div>
   </div>
@@ -98,6 +99,6 @@
 
 <script setup lang="ts">
 import InputPrice from '../InputPrice/InputPrice.vue'
-import { calculatorPercentRatio, genRandFeeBoost } from '@/utils/helper'
+import { calculatorPercentRatio, genRandFeeBoost, calculatorEstimatedAPR } from '@/utils/helper'
 </script>
 <style lang="scss" scoped></style>
