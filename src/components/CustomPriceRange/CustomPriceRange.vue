@@ -43,7 +43,7 @@
     <div
       class="mt-4 grid auto-rows-auto gap-y-4 p-6 rounded-md border border-solid border-neutral-400"
     >
-      <div class="h-6 justify-between flex w-full items-center">
+      <!-- <div class="h-6 justify-between flex w-full items-center">
         <div class="flex items-center gap-x-2">
           <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
           <div class="sc-tegty0-1 DvmOQ">
@@ -54,6 +54,21 @@
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
           49.9% STONE <br />/ 50.1% KLAY
+        </div>
+      </div> -->
+
+      <div class="h-6 justify-between flex w-full items-center">
+        <div class="flex items-center gap-x-2">
+          <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
+          <div class="sc-tegty0-1 DvmOQ">
+            <div class="sc-17suybh-0 fNPprW">
+              <img src="@/assets/notice.svg" alt="Notice" />
+            </div>
+          </div>
+        </div>
+        <div class="text-sm font-medium text-neutral-500 text-end">
+          {{ calculatorPercentRatio(34.0498, 34.0498 + 52.1332) }} STONE Test<br />/
+          {{ calculatorPercentRatio(52.1332, 34.0498 + 52.1332) }} KLAY Test
         </div>
       </div>
 
@@ -66,7 +81,9 @@
             </div>
           </div>
         </div>
-        <div class="text-sm font-medium text-neutral-500 text-end">X9.90</div>
+        <div class="text-sm font-medium text-neutral-500 text-end">
+          {{ `X${genRandFeeBoost(9, 12)}` }}
+        </div>
       </div>
 
       <div class="h-6 justify-between flex w-full items-center">
@@ -81,5 +98,6 @@
 
 <script setup lang="ts">
 import InputPrice from '../InputPrice/InputPrice.vue'
+import { calculatorPercentRatio, genRandFeeBoost } from '@/utils/helper'
 </script>
 <style lang="scss" scoped></style>
