@@ -31,19 +31,85 @@ export interface Pool {
   __typename: 'Pool'
 }
 
-export const usePoolStore = defineStore('pool', () => {
-  const currentPools = ref<Pool[] | null>(null)
+export interface Paging {
+  page: number
+  limit: number
+  canNext: boolean
+  canPrev: boolean
+}
 
-  const pools = computed(() => currentPools.value)
+export const usePoolStore = defineStore('pool', () => {
+  const currentPools = ref<Pool[]>([])
+  const paging = ref<Paging>({
+    page: 0,
+    limit: 10,
+    canNext: false,
+    canPrev: false
+  })
+
+  const currentPaging = computed(() => paging.value)
+  const pools = computed(() => {
+    const data = [...currentPools.value]
+    return data.splice(paging.value.page * paging.value.limit, paging.value.limit)
+  })
+  const totalPage = computed(() => Math.round(currentPools.value.length / paging.value.limit))
 
   const fetchPools = async () => {
     try {
       const { data } = await api.get<Pool[]>('polls')
       currentPools.value = data
+      const { page, limit } = paging.value
+      paging.value.canNext = page * limit <= data.length
+      paging.value.canPrev = false
     } catch (error) {
       console.error(error)
     }
   }
 
-  return { currentPools, pools, fetchPools }
+  const nextPage = () => {
+    if (!paging.value.canNext) return
+    paging.value.page += 1
+    const { page, limit } = paging.value
+    paging.value.canNext = currentPools.value.length - (page + 1) * limit > 0
+    paging.value.canPrev = true
+  }
+
+  const prevPage = () => {
+    if (!paging.value.canPrev) return
+    paging.value.page -= 1
+    paging.value.canPrev = paging.value.page > 0
+    paging.value.canNext = true
+  }
+
+  const startPage = () => {
+    if (!paging.value.canPrev) return
+    paging.value.page = 0
+    paging.value.canPrev = false
+    const { page, limit } = paging.value
+    paging.value.canNext = currentPools.value.length - (page + 1) * limit > 0
+  }
+
+  const lastPage = () => {
+    if (!paging.value.canNext) return
+    const { limit } = paging.value
+    const totalLength = currentPools.value.length
+    paging.value.page =
+      totalLength % limit !== 0
+        ? Math.floor(totalLength / limit)
+        : Math.floor(totalLength / limit) - 1
+    paging.value.canPrev = paging.value.page > 0
+    paging.value.canNext = false
+  }
+
+  return {
+    currentPools,
+    pools,
+    currentPaging,
+    fetchPools,
+    nextPage,
+    prevPage,
+    startPage,
+    lastPage,
+    totalPage
+  }
 })

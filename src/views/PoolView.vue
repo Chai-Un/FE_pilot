@@ -29,7 +29,17 @@
           Create
         </Button>
       </div>
-      <Pagination></Pagination>
+      <Pagination
+        :page="poolStore.currentPaging.page"
+        :canNext="poolStore.currentPaging.canNext"
+        :canPrev="poolStore.currentPaging.canPrev"
+        :totalPage="poolStore.totalPage"
+        @next="poolStore.nextPage"
+        @prev="poolStore.prevPage"
+        @start="poolStore.startPage"
+        @last="poolStore.lastPage"
+      >
+      </Pagination>
     </div>
   </div>
 </template>
