@@ -20,7 +20,12 @@
           </div>
         </div>
       </div>
-      <Pool v-for="(item, index) in poolStore.pools" :key="'pool' + index" :pool="item" />
+      <Pool
+        v-for="(item, index) in poolStore.pools"
+        :key="'pool' + index"
+        :pool="item"
+        @selectPool="selectPool($event)"
+      />
     </div>
     <div class="w-full max-w-[672px] m-auto px-4 grid grid-cols-1 sm:grid-cols-3">
       <div class="flex justify-start">
@@ -30,9 +35,9 @@
         </Button>
       </div>
       <Pagination
-        :page="poolStore.currentPaging.page"
-        :canNext="poolStore.currentPaging.canNext"
-        :canPrev="poolStore.currentPaging.canPrev"
+        :page="poolStore.paging.page"
+        :canNext="poolStore.paging.canNext"
+        :canPrev="poolStore.paging.canPrev"
         :totalPage="poolStore.totalPage"
         @next="poolStore.nextPage"
         @prev="poolStore.prevPage"
@@ -46,14 +51,20 @@
 
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue'
-import { usePoolStore } from '@/stores/pool'
+import { usePoolStore, Pool as IPool } from '@/stores/pool'
 import Input from '@/components/Input/Input.vue'
 import Button from '@/components/Button/Button.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import Icon from '@/components/Icon/Icon.vue'
 import Pool from '@/components/Pool/Pool.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const poolStore = usePoolStore()
+const selectPool = (pool: IPool) => {
+  poolStore.selectPool(pool)
+  router.push(`/pool/${pool.address}`)
+}
 
 onBeforeMount(async () => {
   await poolStore.fetchPools()

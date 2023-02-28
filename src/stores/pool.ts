@@ -38,78 +38,97 @@ export interface Paging {
   canPrev: boolean
 }
 
+export interface PoolState {
+  allPools: Pool[]
+  pools: Pool[]
+  paging: Paging
+  selectedPool?: Pool
+}
+
 export const usePoolStore = defineStore('pool', () => {
-  const currentPools = ref<Pool[]>([])
-  const paging = ref<Paging>({
-    page: 0,
-    limit: 10,
-    canNext: false,
-    canPrev: false
+  const state = ref<PoolState>({
+    allPools: [],
+    pools: [],
+    selectedPool: undefined,
+    paging: {
+      page: 0,
+      limit: 10,
+      canNext: false,
+      canPrev: false
+    }
   })
 
-  const currentPaging = computed(() => paging.value)
+  const allPools = computed(() => state.value.allPools)
+  const paging = computed(() => state.value.paging)
   const pools = computed(() => {
-    const data = [...currentPools.value]
+    const data = [...allPools.value]
     return data.splice(paging.value.page * paging.value.limit, paging.value.limit)
   })
-  const totalPage = computed(() => Math.round(currentPools.value.length / paging.value.limit))
+  const totalPage = computed(() => Math.round(state.value.allPools.length / paging.value.limit))
+  const selectedPool = computed(() => state.value.selectedPool)
 
   const fetchPools = async () => {
     try {
       const { data } = await api.get<Pool[]>('polls')
-      currentPools.value = data
+      state.value.allPools = data
       const { page, limit } = paging.value
-      paging.value.canNext = page * limit <= data.length
-      paging.value.canPrev = false
+      state.value.paging.canNext = page * limit <= data.length
+      state.value.paging.canPrev = false
     } catch (error) {
       console.error(error)
     }
   }
 
   const nextPage = () => {
-    if (!paging.value.canNext) return
-    paging.value.page += 1
-    const { page, limit } = paging.value
-    paging.value.canNext = currentPools.value.length - (page + 1) * limit > 0
-    paging.value.canPrev = true
+    if (!state.value.paging.canNext) return
+    state.value.paging.page += 1
+    const { page, limit } = state.value.paging
+    state.value.paging.canNext = state.value.allPools.length - (page + 1) * limit > 0
+    state.value.paging.canPrev = true
   }
 
   const prevPage = () => {
-    if (!paging.value.canPrev) return
-    paging.value.page -= 1
-    paging.value.canPrev = paging.value.page > 0
-    paging.value.canNext = true
+    if (!state.value.paging.canPrev) return
+    state.value.paging.page -= 1
+    state.value.paging.canPrev = state.value.paging.page > 0
+    state.value.paging.canNext = true
   }
 
   const startPage = () => {
-    if (!paging.value.canPrev) return
-    paging.value.page = 0
-    paging.value.canPrev = false
-    const { page, limit } = paging.value
-    paging.value.canNext = currentPools.value.length - (page + 1) * limit > 0
+    if (!state.value.paging.canPrev) return
+    state.value.paging.page = 0
+    state.value.paging.canPrev = false
+    const { page, limit } = state.value.paging
+    state.value.paging.canNext = state.value.allPools.length - (page + 1) * limit > 0
   }
 
   const lastPage = () => {
-    if (!paging.value.canNext) return
-    const { limit } = paging.value
-    const totalLength = currentPools.value.length
-    paging.value.page =
+    if (!state.value.paging.canNext) return
+    const { limit } = state.value.paging
+    const totalLength = state.value.allPools.length
+    state.value.paging.page =
       totalLength % limit !== 0
         ? Math.floor(totalLength / limit)
         : Math.floor(totalLength / limit) - 1
-    paging.value.canPrev = paging.value.page > 0
-    paging.value.canNext = false
+    state.value.paging.canPrev = state.value.paging.page > 0
+    state.value.paging.canNext = false
+  }
+
+  const selectPool = (selected: Pool) => {
+    state.value.selectedPool = selected
   }
 
   return {
-    currentPools,
+    allPools,
     pools,
-    currentPaging,
+    paging,
     fetchPools,
     nextPage,
     prevPage,
     startPage,
     lastPage,
-    totalPage
+    totalPage,
+    selectPool,
+    selectedPool
   }
 })

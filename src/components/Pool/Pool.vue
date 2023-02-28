@@ -22,7 +22,9 @@
           <TagBase class="ml-2 font-semibold leading-[12px]">STONE</TagBase>
         </div>
       </div>
-      <Button class="block h-[32px] sm:h-[24px]">Add</Button>
+      <Button class="block h-[32px] sm:h-[24px]" @click="() => emits('selectPool', props.pool)"
+        >Add</Button
+      >
     </div>
     <div
       class="border-t border-t-neutral-200 pt-4 gap-2 sm:gap-4 flex flex-col sm:grid sm:grid-cols-[minmax(auto,_148px)_minmax(auto,_148px)_minmax(auto,_132px)]"
@@ -67,6 +69,7 @@ interface Props {
   pool: Pool
 }
 const props = defineProps<Props>()
+const emits = defineEmits(['selectPool'])
 </script>
 <script lang="ts">
 export default {
