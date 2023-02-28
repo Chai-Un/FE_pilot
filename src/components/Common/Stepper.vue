@@ -5,7 +5,7 @@
     >
       <li
         v-for="(item, index) in totalSteps"
-        class="flex items-center m-[0px] min-w-[0px] w-[52px] h-[4px] bg-neutral-200"
+        class="flex items-center m-[0px] min-w-[0px] w-[52px] h-[4px] bg-neutral-400"
         :class="{ activated: index + 1 <= currentStep }"
         :key="index"
       ></li>

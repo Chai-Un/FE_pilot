@@ -5,7 +5,7 @@
 </template>
 <script lang="ts" setup>
 interface Props {
-  variant?: 'primary'
+  variant?: 'primary' | 'secondary-outlined'
 }
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary'
