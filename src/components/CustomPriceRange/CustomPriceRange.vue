@@ -38,6 +38,7 @@
             <div class="text-4.5 font-medium">1 STONE = 37.0877 KLAY</div>
           </div>
         </div>
+        <DemoChart />
       </div>
 
       <div class="flex justify-between">
@@ -74,20 +75,6 @@
           minPrice > maxPrice
       }"
     >
-      <!-- <div class="h-6 justify-between flex w-full items-center">
-        <div class="flex items-center gap-x-2">
-          <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
-          <div class="sc-tegty0-1 DvmOQ">
-            <div class="sc-17suybh-0 fNPprW">
-              <img src="@/assets/notice.svg" alt="Notice" />
-            </div>
-          </div>
-        </div>
-        <div class="text-sm font-medium text-neutral-500 text-end">
-          {{ maxPrice > minPrice? `49.9% STONE <br />/ 50.1% KLAY` : '-' }}
-        </div>
-      </div> -->
-
       <div class="h-6 justify-between flex w-full items-center">
         <div class="flex items-center gap-x-2">
           <div class="text-sm font-semibold text-neutral-500">Deposit Ratio</div>
@@ -148,6 +135,7 @@
 import { ref } from 'vue'
 import InputPrice from '../InputPrice/InputPrice.vue'
 import Icon from '@/components/Icon/Icon.vue'
+import DemoChart from '../Chart/DemoChart.vue'
 import { calculatorPercentRatio, genRandFeeBoost, calculatorEstimatedAPR } from '@/utils/helper'
 
 const minPrice = ref(400)
