@@ -7,14 +7,18 @@
         class="min-w-[116px] h-6 flex w-fit items-center rounded p-0 border-none cursor-pointer bg-neutral-400"
       >
         <div
-          class="min-w-[58px] h-6 rounded px-1 py-2 justify-center items-center border border-solid border-neutral-400 bg-white flex"
+          class="min-w-[58px] h-6 rounded px-1 py-2 justify-center items-center border border-solid border-neutral-400 flex"
+          :class="{ 'bg-white': !swithToken, 'bg-neutral-400': swithToken }"
+          @click="swithToken = !swithToken"
         >
-          <div class="font-semibold text-lxs">STONE</div>
+          <div class="font-medium text-lxs" :class="{ 'text-neutral-600': swithToken }">STONE</div>
         </div>
         <div
-          class="min-w-[58px] h-6 rounded px-1 py-2 justify-center items-center border border-solid border-neutral-400 bg-neutral-400 flex"
+          class="min-w-[58px] h-6 rounded px-1 py-2 justify-center items-center border border-solid border-neutral-400 flex"
+          :class="{ 'bg-white': swithToken, 'bg-neutral-400': !swithToken }"
+          @click="swithToken = !swithToken"
         >
-          <div class="font-semibold text-lxs text-neutral-600">KLAY</div>
+          <div class="font-medium text-lxs" :class="{ 'text-neutral-600': !swithToken }">KLAY</div>
         </div>
       </button>
 
@@ -35,13 +39,40 @@
           </div>
         </div>
       </div>
+
+      <div class="flex justify-between">
+        <div class="flex gap-x-1">
+          <button>
+            <Icon
+              name="ic-zoom-in"
+              class="w-8 h-8 border rounded p-1 bg-neutral-100 text-neutral-500 hover:text-white hover:bg-orange-800"
+            />
+          </button>
+          <button>
+            <Icon
+              name="ic-zoom-out"
+              class="w-8 h-8 border rounded p-1 bg-neutral-100 text-neutral-500 hover:text-white hover:bg-orange-800"
+            />
+          </button>
+        </div>
+        <button>
+          <Icon
+            name="ic-reset"
+            class="w-8 h-8 border rounded p-1 bg-neutral-100 text-neutral-500 hover:text-white hover:bg-orange-800"
+          />
+        </button>
+      </div>
     </div>
     <div class="grid auto-rows-auto gap-y-4 mt-4">
-      <InputPrice />
-      <InputPrice />
+      <InputPrice v-model:price="minPrice" :type="'Min'" />
+      <InputPrice v-model:price="maxPrice" :type="'Max'" />
     </div>
     <div
       class="mt-4 grid auto-rows-auto gap-y-4 p-6 rounded-md border border-solid border-neutral-400"
+      :class="{
+        'opacity-20 p-6 border rounded-md border-solid border-neutral-200 bg-white':
+          minPrice > maxPrice
+      }"
     >
       <!-- <div class="h-6 justify-between flex w-full items-center">
         <div class="flex items-center gap-x-2">
@@ -53,7 +84,7 @@
           </div>
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
-          49.9% STONE <br />/ 50.1% KLAY
+          {{ maxPrice > minPrice? `49.9% STONE <br />/ 50.1% KLAY` : '-' }}
         </div>
       </div> -->
 
@@ -67,8 +98,8 @@
           </div>
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
-          {{ calculatorPercentRatio(34.0498, 34.0498 + 52.1332) }} STONE Test<br />/
-          {{ calculatorPercentRatio(52.1332, 34.0498 + 52.1332) }} KLAY Test
+          {{ calculatorPercentRatio(34.0498, 34.0498 + 52.1332) }} STONE<br />/
+          {{ calculatorPercentRatio(52.1332, 34.0498 + 52.1332) }} KLAY
         </div>
       </div>
 
@@ -82,7 +113,7 @@
           </div>
         </div>
         <div class="text-sm font-medium text-neutral-500 text-end">
-          {{ `X${genRandFeeBoost(9, 12)}` }}
+          {{ maxPrice > minPrice ? `X${genRandFeeBoost(9, 12)}` : '-' }}
         </div>
       </div>
 
@@ -90,15 +121,41 @@
         <div class="flex items-center gap-x-2">
           <div class="text-sm font-semibold">Estimated APR</div>
         </div>
-        <!-- <div class="text-lg font-medium font-bold text-end">68.67%</div> -->
-        <div class="text-lg font-medium font-bold text-end">{{ calculatorEstimatedAPR(1, 2) }}</div>
+        <div class="text-lg font-medium font-bold text-end">
+          {{ maxPrice > minPrice ? calculatorEstimatedAPR(1, 2) : '-' }}
+        </div>
+      </div>
+    </div>
+
+    <div v-if="checkEstimateAPR()" class="flex justify-start p-4 mt-4">
+      <div class="grid gap-x-1 max-w-full auto-rows-auto">
+        <div class="gap-2 flex align-center justify-start w-full">
+          <Icon name="ic-warning" class="text-red-800" />
+          <div class="text-red-800 text-sm font-medium">Cannot Receive Fees.</div>
+        </div>
+        <div class="pl-8">
+          <div class="font-medium text-lxs text-neutral-500">
+            Your position will be able to earn fees or be used in trades after the current price
+            moves into your range.
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import InputPrice from '../InputPrice/InputPrice.vue'
+import Icon from '@/components/Icon/Icon.vue'
 import { calculatorPercentRatio, genRandFeeBoost, calculatorEstimatedAPR } from '@/utils/helper'
+
+const minPrice = ref(400)
+const maxPrice = ref(500)
+const swithToken = ref(false)
+
+const checkEstimateAPR = () => {
+  return true
+}
 </script>
 <style lang="scss" scoped></style>
