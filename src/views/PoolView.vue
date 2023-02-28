@@ -8,9 +8,14 @@
       >
         <span class="text-2xl font-bold">POOL</span>
         <div class="flex flex-row gap-2 w-[100%] sm:w-auto">
-          <Input placeholder="Token name">
+          <Input
+            placeholder="Token name"
+            class="focus:text-orange-900"
+            @change="handleTextSearch($event)"
+            v-model="textSearch"
+          >
             <template #input-prepend>
-              <img class="w-[16px] h-[16px]" src="@/assets/search.svg" alt="Sort Icon" />
+              <Icon size="0 0 16 16" name="ic-search" />
             </template>
           </Input>
           <div
@@ -20,7 +25,12 @@
           </div>
         </div>
       </div>
-      <Pool v-for="(item, index) in poolStore.pools" :key="'pool' + index" :pool="item" />
+      <Pool
+        v-for="(item, index) in poolStore.pools"
+        :key="'pool' + index"
+        :pool="item"
+        @selectPool="selectPool($event)"
+      />
     </div>
     <div class="w-full max-w-[672px] m-auto px-4 grid grid-cols-1 sm:grid-cols-3">
       <div class="flex justify-start">
@@ -29,23 +39,46 @@
           Create
         </Button>
       </div>
-      <Pagination></Pagination>
+      <Pagination
+        v-if="poolStore.totalPage"
+        :page="poolStore.paging.page"
+        :canNext="poolStore.paging.canNext"
+        :canPrev="poolStore.paging.canPrev"
+        :totalPage="poolStore.totalPage"
+        @next="poolStore.nextPage"
+        @prev="poolStore.prevPage"
+        @start="poolStore.startPage"
+        @last="poolStore.lastPage"
+      >
+      </Pagination>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount } from 'vue'
-import { usePoolStore } from '@/stores/pool'
+import { onBeforeMount, ref } from 'vue'
+import { usePoolStore, type Pool as IPool } from '@/stores/pool'
 import Input from '@/components/Input/Input.vue'
 import Button from '@/components/Button/Button.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import Icon from '@/components/Icon/Icon.vue'
 import Pool from '@/components/Pool/Pool.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const poolStore = usePoolStore()
+const textSearch = ref('')
+
+const selectPool = (pool: IPool) => {
+  poolStore.selectPool(pool)
+  router.push(`/pool/${pool.address}`)
+}
+const handleTextSearch = ($event: any) => {
+  poolStore.setTextSearch($event)
+}
 
 onBeforeMount(async () => {
   await poolStore.fetchPools()
+  textSearch.value = poolStore.textSearch
 })
 </script>

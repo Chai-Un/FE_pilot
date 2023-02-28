@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/PoolView.vue')
       },
       {
-        path: '/pool/:walletAddress',
+        path: '/pool/:address',
         name: 'deposit',
         component: () => import('@/views/DepositView.vue')
       }
